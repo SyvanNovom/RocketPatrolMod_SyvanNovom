@@ -101,12 +101,6 @@ class Play extends Phaser.Scene {
 
         this.starfield.tilePositionX -= 2;  // update tile sprite
         this.parallax.tilePositionX -= 4;
-        for(i in Range(game.settings.gameTimer)) {
-            i--
-            if(Number.isInteger(i) == True) {
-                this.scoreRight.text = i
-            }
-        }
 
         if(!this.gameOver) {
             this.p1Rocket.update();             // update p1
