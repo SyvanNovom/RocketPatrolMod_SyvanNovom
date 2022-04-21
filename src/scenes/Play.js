@@ -5,7 +5,8 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images/tile sprites
-        this.load.image('rocket', './assets/rocket.png');
+        this.load.image('rocket', './assets/LaserBeam.png');
+        this.load.image('laser', './assets/laser.png');
         this.load.image('spaceship', './assets/spaceship.png');
         this.load.image('starfield', './assets/starfield.png');
         this.load.image('smallship', './assets/SmallShip.png');
@@ -20,7 +21,7 @@ class Play extends Phaser.Scene {
         this.parallax = this.add.tileSprite(0, 0, 640, 480, 'para').setOrigin(0,0);
 
         // green UI background
-        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
+        this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x610C04).setOrigin(0, 0);
         // white borders
         this.add.rectangle(0, 0, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
         this.add.rectangle(0, game.config.height - borderUISize, game.config.width, borderUISize, 0xFFFFFF).setOrigin(0 ,0);
@@ -28,6 +29,7 @@ class Play extends Phaser.Scene {
         this.add.rectangle(game.config.width - borderUISize, 0, borderUISize, game.config.height, 0xFFFFFF).setOrigin(0 ,0);
 
         // add Rocket (p1)
+        this.laser = new Laser(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'laser').setOrigin(0.5, 1);
         this.p1Rocket = new Rocket(this, game.config.width/2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
 
         // add Spaceships (x4)
@@ -66,6 +68,9 @@ class Play extends Phaser.Scene {
             fixedWidth: 100
         }
         this.scoreLeft = this.add.text(borderUISize + borderPadding, borderUISize + borderPadding*2, this.p1Score, scoreConfig);
+        this.scoreRight = this.add.text(borderUISize*15 + borderPadding, borderUISize + borderPadding*2, game.settings.gameTimer/1000, scoreConfig);
+        scoreConfig.fixedWidth = 70
+        this.fire = this.add.text(borderUISize*8 + borderPadding, borderUISize + borderPadding*2, 'FIRE', scoreConfig);
 
         // GAME OVER flag
         this.gameOver = false;
@@ -90,10 +95,11 @@ class Play extends Phaser.Scene {
         }
 
         this.starfield.tilePositionX -= 2;  // update tile sprite
-        this.parallax.tilePositionX -=4;
+        this.parallax.tilePositionX -= 4;
 
         if(!this.gameOver) {
             this.p1Rocket.update();             // update p1
+            this.laser.update();
              this.ship01.update();               // update spaceship (x3)
             this.ship02.update();
             this.ship03.update();
@@ -101,20 +107,20 @@ class Play extends Phaser.Scene {
         }
 
         // check collisions
-        if(this.checkCollision(this.p1Rocket, this.ship04)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.laser, this.ship04)) {
+            this.laser.reset();
             this.shipExplode(this.ship04);
         }
-        if(this.checkCollision(this.p1Rocket, this.ship03)) {
-            this.p1Rocket.reset();
+        if(this.checkCollision(this.laser, this.ship03)) {
+            this.laser.reset();
             this.shipExplode(this.ship03);
         }
-        if (this.checkCollision(this.p1Rocket, this.ship02)) {
-            this.p1Rocket.reset();
+        if (this.checkCollision(this.laser, this.ship02)) {
+            this.laser.reset();
             this.shipExplode(this.ship02);
         }
-        if (this.checkCollision(this.p1Rocket, this.ship01)) {
-            this.p1Rocket.reset();
+        if (this.checkCollision(this.laser, this.ship01)) {
+            this.laser.reset();
             this.shipExplode(this.ship01);
         }
     }
