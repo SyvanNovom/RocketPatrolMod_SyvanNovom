@@ -27,9 +27,9 @@ class Menu extends Phaser.Scene {
         
         // show menu text
         this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'Welcome to', menuConfig).setOrigin(0.5);
-        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET PATROL', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2 - borderUISize - borderPadding, 'ROCKET WARS', menuConfig).setOrigin(0.5);
         menuConfig.fontSize = '28px';
-        this.add.text(game.config.width/2, game.config.height/2, 'Use Left Click to fire', menuConfig).setOrigin(0.5);
+        this.add.text(game.config.width/2, game.config.height/2, 'Use (W) to fire', menuConfig).setOrigin(0.5);
         menuConfig.backgroundColor = '#FFA701';
         menuConfig.color = '#000';
         this.add.text(game.config.width/2, game.config.height/2 + borderUISize + borderPadding*2, 'Press A for Novice or D for Expert', menuConfig).setOrigin(0.5);
