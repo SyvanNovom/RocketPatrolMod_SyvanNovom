@@ -1,3 +1,4 @@
+var timer = 60000
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
@@ -39,7 +40,7 @@ class Play extends Phaser.Scene {
         this.ship04 = new Smallship(this, game.config.width, borderUISize*7 + borderPadding*5, 'smallship', 0, 60).setOrigin(0,0);
 
         // define keys
-        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        shoot = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
         keyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R);
         keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
         keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
@@ -80,6 +81,10 @@ class Play extends Phaser.Scene {
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
             this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
             this.add.text(game.config.width/2, game.config.height/2 + 64, 'Press (R) to Restart or A to Menu', scoreConfig).setOrigin(0.5);
+            if (this.p1Score > highscore) {
+                highscore = this.p1Score;
+                this.add.text(game.config.width/2, game.config.height/2 + 96, 'New High Score: ' + highscore, scoreConfig).setOrigin(0.5);
+            }
             this.gameOver = true;
         }, null, this);
     }
@@ -96,6 +101,12 @@ class Play extends Phaser.Scene {
 
         this.starfield.tilePositionX -= 2;  // update tile sprite
         this.parallax.tilePositionX -= 4;
+        for(i in Range(game.settings.gameTimer)) {
+            i--
+            if(Number.isInteger(i) == True) {
+                this.scoreRight.text = i
+            }
+        }
 
         if(!this.gameOver) {
             this.p1Rocket.update();             // update p1
